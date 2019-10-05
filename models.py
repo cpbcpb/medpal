@@ -1,4 +1,5 @@
 from app import app, db
+from tools import convert_address_to_lonlat
 
 class Address():
 
@@ -111,7 +112,7 @@ class Patient(db.Model):
     allergies = db.Column(db.String(2000))
     cell_phone = db.Column(db.String(50))
     gender = db.Column(db.String(50))
-    
+    location = db.Column(db.String(200))
     
     deliveries = db.relationship("Delivery", backref="patient_id")
     
@@ -137,3 +138,4 @@ class Patient(db.Model):
         self.ss_no = ss_no
         self.chronic_conditions = chronic_conditions
         self.Rx_no = Rx_no
+        self.location = convert_address_to_lonlat(self.location)

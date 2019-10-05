@@ -2,6 +2,7 @@ from flask import Flask, request, render_template, session
 from flask_sqlalchemy import SQLAlchemy
 from models import Pharmacy, Patient
 
+
 app = Flask(__name__)
 db = SQLAlchemy(app)
 
@@ -65,8 +66,9 @@ def patient_signup():
         db.session.commit()
     return 'SIGNUP VIEW (This is not necessary)'
 
-@app.route('/pharmacy', methods=["GET" ])
+@app.route('/pharmacy', methods=["GET"])
 def pharmacy():
+
     return 'PHARMACY VIEW'
 
 @app.route('/pharmacy/signup', methods=["POST" ])
