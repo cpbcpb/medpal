@@ -24,6 +24,19 @@
 
 
         </div>
+        {% block content %}
+
+        {% endblock %}
+
+        {% with messages = get_flashed_messages(with_categories=True) %}
+        <ul>
+            {% for category, message in messages %}
+            <div class="text-danger {{ category }}" role="alert">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </ul>
+        {% endwith %}
     
 
         <!-- Optional JavaScript -->
