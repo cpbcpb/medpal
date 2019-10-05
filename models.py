@@ -1,8 +1,6 @@
-from flask_sqlalchemy import SQLAlchemy
-from app import app
 
+from app import app, db
 
-db = SQLAlchemy(app)
 
 class Medicine(db.Model):
 
