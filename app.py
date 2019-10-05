@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, session
 from flask_sqlalchemy import SQLAlchemy
-from models import Pharmacy, Patient
+import models
 
 
 app = Flask(__name__)
@@ -13,6 +13,7 @@ def index():
 
 @app.route('/signup', methods=["GET"])
 def signup():
+
     return 'SIGNUP VIEW (This is not necessary)'
 
 @app.route('/patient/signup', methods=["POST"])

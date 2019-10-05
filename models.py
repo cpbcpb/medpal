@@ -1,5 +1,10 @@
-from app import app, db
+import app
 from tools import convert_address_to_lonlat
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy(app)
+
+
 
 class Address():
 
@@ -18,7 +23,7 @@ class Medicine(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     product_ndc = db.Column(db.String(50))              #National drug code FDA
     proprietary_name = db.Column(db.String(200))
-    nonproprietary_name = db.Column(db.string(1000))
+    nonproprietary_name = db.Column(db.String(1000))
     date_added = db.Column(db.DateTime)
 
     def __init__(self, medicine_id, product_ndc, proprietary_name, nonproprietary_name, date_added):
