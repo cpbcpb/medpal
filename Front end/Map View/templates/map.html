@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Maps</title>
+    <!-- CDN for vue, CDN for Axios -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- The above is a learning/prototyping version.  update for prod -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.js"></script>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+             * element that contains the map. */
+      #map {
+        height: 50%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map-container {
+          display:flex;
+          flex-direction:column;
+          justify-content:center;
+          height:100%;
+          /* align-items: stretch; values for this other than stretch seem to break this*/
+      }
+      
+    </style>
+  </head>
+  <body>
+    <div id="map-container">
+        <div id="map"></div>
+    </div>
+    <script>
+      function initMap() {
+        var myLatLng = { lat: 26.393376, lng: -80.078069 };
+
+        var map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 13,
+          center: myLatLng
+        });
+
+        var marker = new google.maps.Marker({
+          position: myLatLng,
+          map: map,
+          title: "Hello World!"
+        });
+      }
+    </script>
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA_spAgjWSXoJISNjY9Nz2B817JGEn65x0&callback=initMap"
+    ></script>
+  </body>
+</html>
