@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="./map2.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- The above is a learning/prototyping version.  update for prod -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.js"></script>
+   <title>Document</title>
+</head>
+<body>
+    <div class="mobile-nav">
+        <h3>MedPal</h3>
+        <h1>=</h1>
+    </div>
+    <div class="offline-indicator">
+        OFFLINE INDICATOR
+    </div>
+    <div id="vueApp" class="map-container">
+            <div id="map"></div>
+    </div>
+    <div class="arrival-info">
+        <div class="arrival-info-left">
+            <h4>10 min</h4>
+            <p>1.5 miles away</p>
+        </div>
+        <button>
+            I Arrived
+        </button>
+    </div>
+    <!-- Todo: Make the database call for the lat long from axios -->
+    <script>
+    axios
+.get(``, {
+  params: {
+    userid: 1,
+  }
+})
+.then(response => {
+  response.data.lat;
+})
+.catch(err => {
+  res.status(404).json(err);
+});
+
+var app = new Vue({
+  el: '#vueApp',
+  data: {
+    message: 'Hello Vue!'
+  }
+})
+
+
+
+// This function tells map what info to contain
+function initMap() {
+          var myLatLng = { lat: 26.393376, lng: -80.078069 };
+  
+          var map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 13,
+            center: myLatLng
+          });
+  
+          var marker = new google.maps.Marker({
+            position: myLatLng,
+            map: map,
+            title: "Hello World!"
+          });
+        }
+</script>
+<!-- This script gets the map from the api -->
+<script
+        async
+        defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA_spAgjWSXoJISNjY9Nz2B817JGEn65x0&callback=initMap"
+></script>
+
+</body>
+</html>
+<script>
+
+
+</script>
