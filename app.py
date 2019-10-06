@@ -24,8 +24,8 @@ def index():
     })
     return 'HOMEPAGE AND LOGIN (Doesnt need to be extravagant'
 
-@app.route('/', methods=["GET"])
-def index():
+@app.route('/map', methods=["GET"])
+def map():
     return render_template('map2.html')
 
 @app.route('/signup', methods=["GET"])
