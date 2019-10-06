@@ -8,15 +8,24 @@
 {% else %}
   <div class="h5 font-weight-bold">Current Status:</div>
         <div class="font-weight-bold">Patient ID: <span class="text-info">{{ patient.id }}</span></div>
-        <div class="font-weight-bold">Patient Name: <span class="font-weight-bold text-info">{{ patient.name }}</span></div>
+        <div class="font-weight-bold">Patient Name: <span class="font-weight-bold text-info">{{ patient.name }} {{ patient.last_name }} </span></div>
         <br><br>
+        {% if patient.risk_assessment %}
+          {% if patient.risk_assessment == "Low" %}
+            {% set curr_color = "success" %}
+          {% elif patient.risk_assessment == "Medium" %}
+            {% set curr_color = "warning" %}
+          {% elif patient.risk_assessment == "High" %}
+            {% set curr_color = "danger" %}
+          {% endif %}
+          <div class="alert alert-{{ curr_color }}" role="alert">
         <form action="/risk" method="post">
           <div class="form-group input-group-sm w-25">
             <label>
               My Risk Level:
               <select class="form-control form-control-sm" name="risk">
                 {% for risk in risk_levels %}
-                  {% if patient.risk and risk == patient.risk %}
+                  {% if patient.risk_assessment and risk == patient.risk_assessment %}
                     <option selected>{{ risk }}</option>
                   {% else %}
                     <option>{{ risk }}</option>
@@ -28,6 +37,22 @@
           </div>
           <input type="submit" class="btn btn-info btn-sm" value="Update Status!"/>
         </form>
+          </div>
+          {% endif %}
+        {% if new_risk %}
+          {% if new_risk == "Low" %}
+            {% set confirmation_color = "success" %}
+          {% elif new_risk == "Medium" %}
+            {% set confirmation_color = "warning" %}
+          {% elif new_risk == "High" %}
+            {% set confirmation_color = "danger" %}
+          {% endif %}
+        <div class="alert alert-{{ confirmation_color }} w-50" role="alert">
+            Risk Assessment changed to 
+            
+            <span class="font-weight-bold">{{ new_risk }}</span>
+        </div>
+        {% endif %}
 {% endif %}
 
 {% endblock %}

@@ -192,7 +192,7 @@ def map():
 
 @app.route('/checkup', methods=["GET"])
 def checkup_view():
-    return render_template('CheckUp Screen.html')
+    return render_template('checkup_screen.html')
 
 # @app.route('/delivery/deliver', methods=["GET"])
 # def deliver():
@@ -232,10 +232,10 @@ def get_risk():
     
     return redirect('/risk')
 
-@app.route('/risk', methods=["GET"])
-def risk():
-    patient = Patient.query.filter_by(id=1).first()
-    return render_template('curr_assessment.html', patient={"name": patient.name, "id": 1})
+# @app.route('/risk', methods=["GET"])
+# def risk():
+#     patient = Patient.query.filter_by(id=1).first()
+#     return render_template('curr_assessment.html', patient={"name": patient.name, "id": 1})
 
 #  ===============================================
 
@@ -332,39 +332,48 @@ def pharmacy_signup():
 
 
 # ????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
-# @app.route("/risk", methods=['GET', 'POST'])
-# @app.route("/risk/<int:patientid>/<curr_assessment>")
-# def set_risk(patientid=None, curr_assessment=None):
-#     risk_error = ""
-
-#     if "patientid" in session:
-#         patientid = session['patientid']
-#     else:
-#         flash("Patient not specified")
-#         return redirect(url_for("error"))
-
-#     patient = Patient.query.filter_by(id=patientid).first()
-
-#     if patientid and curr_assessment:
-#         if patient.id == patientid and curr_assessment in risk_levels:
-#             db.session.query(Patient).filter(Patient.id == patientid).update({'risk_assessment': curr_assessment})
-#             db.session.commit()
+@app.route("/risk", methods=['GET', 'POST'])
+@app.route("/risk/<int:patientid>/<curr_assessment>")
+def set_risk(patientid=None, curr_assessment=None):
+    risk_error = ""
+    new_risk = ""
+    
+    session['patientid'] = 1
+    if request.method == "GET":
+        print("Lola")
+        patient = Patient.query.filter_by(id=1).first()
+        return render_template("curr_assessment.html", patient=patient, risk_levels=risk_levels, risk_error=risk_error)
 
 
-#     if not patient:
-#         flash("Patient not found")
-#         return redirect(url_for("error"))
+    if "patientid" in session:
+        patientid = session['patientid']
+    else:
+        flash("Patient not specified")
+        return redirect(url_for("error"))
 
-#     if request.method == 'POST':        
-#         curr_assessment = request.form['risk']
+    patient = Patient.query.filter_by(id=patientid).first()
 
-#         if not curr_assessment or curr_assessment.strip() == "":
-#             risk_error = "Please select a risk level"
-#         else:
-#             db.session.query(Patient).filter(Patient.id == patientid).update({'risk_assessment': curr_assessment})
-#             db.session.commit()
+    if patientid and curr_assessment:
+        if patient.id == patientid and curr_assessment in risk_levels:
+            db.session.query(Patient).filter(Patient.id == patientid).update({'risk_assessment': curr_assessment})
+            db.session.commit()
 
-#     return render_template("curr_assessment.html", patient=patient, risk_levels=risk_levels, risk_error=risk_error)
+
+
+    if not patient:
+        flash("Patient not found")
+        return redirect(url_for("error"))
+
+    if request.method == 'POST':        
+        curr_assessment = request.form['risk']
+
+        if not curr_assessment or curr_assessment.strip() == "":
+            risk_error = "Please select a risk level"
+        else:
+            db.session.query(Patient).filter(Patient.id == patientid).update({'risk_assessment': curr_assessment})
+            db.session.commit()
+
+    return render_template("curr_assessment.html", patient=patient, risk_levels=risk_levels, risk_error=risk_error, new_risk=curr_assessment)
     
     # ======================================================================================================================
 

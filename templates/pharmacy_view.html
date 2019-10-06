@@ -52,9 +52,9 @@
                 </tr>
             </thead>
             <tbody class="ktable">
-                <tr onclick="onGetRisk()">
-                    <td>Neil Harris </td>
-                    <td>1-954-300-1234</td>
+                    <tr onclick="onGetRisk()">
+                    <td>Harris </td>
+                    <td><a href="/risk">1-954-300-1234</a></td>
                     <td>Humira 300</td>
                     <td>High</td>
                 </tr>
@@ -81,7 +81,7 @@
             }
 
             function onGetRisk(){
-                axios.get('/get-risk')
+                axios.get('/risk')
             }
         </script>
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
