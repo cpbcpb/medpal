@@ -173,7 +173,7 @@ def index():
     #     'to': '18134849281',
     #     'text': 'Hello from Nexmo',
     # })
-    
+
     return render_template("base2.html")
 
 @app.route('/signup', methods=["GET"])
@@ -282,6 +282,21 @@ def map():
 @app.route('/delivery/deliver', methods=["GET"])
 def deliver():
     return 'DELIVERY CONFIRMATION VIEW'
+
+@app.route('/message-response', methods=["GET"])
+def message_response():
+    patient = Patient.query.filter_by(id=1).first()
+    # new_delivery = Delivery(
+    #     id=1, 
+    #     driver_id=street_address1, 
+    #     patient_id=street_address2,            
+    #     package=street_address3,
+    #     status=city,
+    #     notes=state, 
+    #     patient_comments=zip_code, 
+    #     location=country
+    # )
+    return "Name: "+str(patient.name)
 
 @app.route("/risk", methods=['GET', 'POST'])
 @app.route("/risk/<int:patientid>/<curr_assessment>")
