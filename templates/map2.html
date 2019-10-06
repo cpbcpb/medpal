@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link rel="stylesheet" type="text/css" href="./map2.css" />
+    <link rel="stylesheet" type="text/css" href="../static/styles/map2.css" />
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <!-- The above is a learning/prototyping version.  update for prod -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.js"></script>
@@ -56,19 +56,53 @@
       //     console.log(err);
       //   });
 
+      
+
+      // function showPosition(position) {
+      //   x.innerHTML = "Latitude: " + position.coords.latitude +
+      //   "<br>Longitude: " + position.coords.longitude;
+      // }
+
       // This function tells map what info to contain
       function initMap() {
+        let fakeLat = 0
+        let fakeLng = 0
         var myLatLng = { lat: vm.lat, lng: vm.long };
+        var LatLng2 = { lat: 0, lng: 0 };
 
-        var map = new google.maps.Map(document.getElementById("map"), {
-          zoom: 13,
-          center: myLatLng
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition((position) => {
+            fakeLat = position.coords.latitude;
+            fakeLng = position.coords.longitude;
+            
+            // return { lat: position.coords.latitude, lng: position.coords.longitude }
+          });
+          // console.log(test)
+        } else {
+          console.log("nope")
+        }
+        console.log(fakeLat)
+        console.log(fakeLng)
+
+        let map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 12.9,
+          center: { lat: 26.4044003, lng: -80.1122331 }
         });
+
 
         var marker = new google.maps.Marker({
           position: myLatLng,
           map: map,
+          icon: "https://maps.google.com/mapfiles/ms/icons/red-dot.png", 
           title: "Hello World!"
+        });
+
+
+        var marker2 = new google.maps.Marker({
+          position: { lat: 26.4044003, lng: -80.1202331 },
+          map: map,
+          icon: "https://maps.google.com/mapfiles/ms/icons/green-dot.png", 
+          title: "You are here!"
         });
       }
     </script>
