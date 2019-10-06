@@ -16,7 +16,7 @@
               My Risk Level:
               <select class="form-control form-control-sm" name="risk">
                 {% for risk in risk_levels %}
-                  {% if patient.risk_assessment and risk == patient.risk_assessment %}
+                  {% if patient.risk and risk == patient.risk %}
                     <option selected>{{ risk }}</option>
                   {% else %}
                     <option>{{ risk }}</option>

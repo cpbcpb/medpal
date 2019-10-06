@@ -1,3 +1,4 @@
+<!-- COME BACK FOR ADD PATIENT BUTTON -->
 <!doctype html>
 <html lang="en">
     <head>
@@ -6,22 +7,29 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="../static/styles/pharmacy.css">
         
         <!-- Just using the CDN for now bc basic lol -->
 
         <title>Here's a title!</title>
     </head>
-    <body style="margin:5px;">
-        <nav class="navbar navbar-expand-lg navbar-dark navbar-full bg-primary">
+    <body style="margin:0px;">
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-full bg-primary knav" style="justify-content: space-between; background-color: rgb(79, 20, 187);">
             <a class= "navbar-brand" href="#">
-            <img src="static/logo.png" width="80" height="40" alt="Medpal Logo" class="d-inline-block align-top" >
+            <img src="../static/Logo_White v2.png" width="80" height="40" alt="Medpal Logo" class="d-inline-block align-top" >
             </a>
+            <button onclick="sendMassAlert()" type="button" class="btn btn-danger red">Mass Patient Check</button>
         </nav>
-        <nav class="navbar">
+        <nav class="navbar under-nav">
             <h4>Patient Portal</h4>
             <div>1-50 of 524</div>
             <button type="button" class="btn btn-success">Add Patient</button>
         </nav>
+        <!-- <div class="modal-container">
+            <div class="add-patient-modal">
+                Add the Form Here
+            </div>
+        </div> -->
 
 
         <table class="table table-striped table-hover">
@@ -32,7 +40,7 @@
                     <th>Number</th>
                     <th>Medication</th>
                     <th>
-                        <div class="dropdown">
+                        <div class="dropdown kdropdown">
                             <a class="btn btn-secondary dropdown-toggle btn-block" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Risk Level</a>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <a class="dropdown-item" href="#">High</a>
@@ -43,8 +51,8 @@
                     </th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
+            <tbody class="ktable">
+                <tr onclick="onGetRisk()">
                     <td>Neil Harris </td>
                     <td>1-954-300-1234</td>
                     <td>Humira 300</td>
@@ -66,7 +74,18 @@
         </table> 
 
         <!-- Optional JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.js"></script>
+        <script>
+            function sendMassAlert(){
+                axios.get('/send-message')
+            }
+
+            function onGetRisk(){
+                axios.get('/get-risk')
+            }
+        </script>
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>

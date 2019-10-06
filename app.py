@@ -1,16 +1,22 @@
-# import models
 from flask_sqlalchemy import SQLAlchemy
 from tools import convert_address_to_lonlat
 import nexmo
 from flask import Flask, request, render_template, session, flash, redirect, url_for
+# from flask_sqlalchemy import SQLAlchemy
+# from models import Pharmacy, Patient
 
 app = Flask(__name__)
 db = SQLAlchemy(app)
 
+app.secret_key = "MedPal"
+
+client = nexmo.Client(key='7d3b3494', secret='vMF3mb7GNxMMDt9s')
+risk_levels = ["None", "Low", "Medium", "High"]
+
 app.config['DEBUG'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://medpal:password@localhost:3306/medpal'
 app.config['SQLALCHEMY_ECHO'] = False
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 app.secret_key = "MedPal"
 
 
@@ -33,6 +39,12 @@ app.secret_key = "MedPal"
 #         self.state = state
 #         self.zip_code = zip_code
 #         self.country = country
+
+# =============================================================================
+# =============================================================================
+# ===============================  MODELS  ====================================
+# =============================================================================
+# =============================================================================
 
 class Medicine(db.Model):
 
@@ -63,7 +75,6 @@ class Delivery(db.Model):
 
     def __init__(self, driver_id, patient_id, package, status, notes, patient_comments, location):
 
-        #self.id = delivery_id
         self.driver_id = driver_id
         self.patient_id = patient_id
         self.package = package
@@ -161,25 +172,73 @@ class Patient(db.Model):
         #self.location = convert_address_to_lonlat(self.location)
 
 
-client = nexmo.Client(key='7d3b3494', secret='vMF3mb7GNxMMDt9s')
 
-risk_levels = ["None", "Low", "Medium", "High"]
+# =============================================================================
+# =============================================================================
+# ===============================  ROUTES  ====================================
+# =============================================================================
+# =============================================================================
+
+
+#  ==============  VIEWS  =============
 
 @app.route('/', methods=["GET"])
 def index():
+    return render_template("pharmacy_view.html")
+
+@app.route('/map', methods=["GET"])
+def map():
+    return render_template('map2.html')
+
+@app.route('/checkup', methods=["GET"])
+def checkup_view():
+    return render_template('CheckUp Screen.html')
+
+# @app.route('/delivery/deliver', methods=["GET"])
+# def deliver():
+#     return 'DELIVERY CONFIRMATION VIEW'
+
+
+# ================ BACKEND ===================
+@app.route('/send-message', methods=["GET"])
+def message_send():
+    client.send_message({
+        'from': '15859357147',
+        'to': '18134849281',
+        'text': 'Look out for that hurricane!',
+    })
+
+    return False
+
+@app.route('/recieve-message', methods=["GET"])
+def message_response():
+    patient = Patient.query.filter_by(id=1).first()
+    # new_delivery = Delivery(
+    #     id=1, 
+    #     driver_id=street_address1, 
+    #     patient_id=street_address2,            
+    #     package=street_address3,
+    #     status=city,
+    #     notes=state, 
+    #     patient_comments=zip_code, 
+    #     location=country
+    # )
+    return "Name: "+str(patient.name)
+
+# ===== HANDLE THE RISK ROUTE (from the pharm page) =============
+
+@app.route('/get-risk', methods=["GET"])
+def get_risk():
     
-    # client.send_message({
-    #     'from': '15859357147',
-    #     'to': '18134849281',
-    #     'text': 'Hello from Nexmo',
-    # })
+    return redirect('/risk')
 
-    return render_template("base2.html")
+@app.route('/risk', methods=["GET"])
+def risk():
+    patient = Patient.query.filter_by(id=1).first()
+    return render_template('curr_assessment.html', patient={"name": patient.name, "id": 1})
 
-@app.route('/signup', methods=["GET"])
-def signup():
+#  ===============================================
 
-    return 'SIGNUP VIEW (This is not necessary)'
 
 @app.route('/patient/signup', methods=["POST"])
 def patient_signup():
@@ -230,12 +289,8 @@ def patient_signup():
 
         db.session.add(new_patient)
         db.session.commit()
-    return 'SIGNUP VIEW (This is not necessary)'
+    return False
 
-@app.route('/pharmacy', methods=["GET"])
-def pharmacy():
-
-    return 'PHARMACY VIEW'
 
 @app.route('/pharmacy/signup', methods=["POST" ])
 def pharmacy_signup():
@@ -273,70 +328,85 @@ def pharmacy_signup():
         db.session.commit()
         #render template pharmacy view with added verification message
 
-        return 'PHARMACY VIEW'
-
-@app.route('/delivery/map', methods=["GET"])
-def map():
-    return 'DELIVERY MAP VIEW'
-
-@app.route('/delivery/deliver', methods=["GET"])
-def deliver():
-    return 'DELIVERY CONFIRMATION VIEW'
-
-@app.route('/message-response', methods=["GET"])
-def message_response():
-    patient = Patient.query.filter_by(id=1).first()
-    # new_delivery = Delivery(
-    #     id=1, 
-    #     driver_id=street_address1, 
-    #     patient_id=street_address2,            
-    #     package=street_address3,
-    #     status=city,
-    #     notes=state, 
-    #     patient_comments=zip_code, 
-    #     location=country
-    # )
-    return "Name: "+str(patient.name)
-
-@app.route("/risk", methods=['GET', 'POST'])
-@app.route("/risk/<int:patientid>/<curr_assessment>")
-def set_risk(patientid=None, curr_assessment=None):
-    risk_error = ""
-    session['patientid'] = 1
-    if "patientid" in session:
-        patientid = session['patientid']
-    else:
-        flash("Patient not specified")
-        return redirect(url_for("error"))
-
-    patient = Patient.query.filter_by(id=patientid).first()
-
-    if patientid and curr_assessment:
-        if patient.id == patientid and curr_assessment in risk_levels:
-            db.session.query(Patient).filter(Patient.id == patientid).update({'risk_assessment': curr_assessment})
-            db.session.commit()
+        return False
 
 
-    if not patient:
-        flash("Patient not found")
-        return redirect(url_for("error"))
+# ????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
+# @app.route("/risk", methods=['GET', 'POST'])
+# @app.route("/risk/<int:patientid>/<curr_assessment>")
+# def set_risk(patientid=None, curr_assessment=None):
+#     risk_error = ""
 
-    if request.method == 'POST':        
-        curr_assessment = request.form['risk']
+#     if "patientid" in session:
+#         patientid = session['patientid']
+#     else:
+#         flash("Patient not specified")
+#         return redirect(url_for("error"))
 
-        if not curr_assessment or curr_assessment.strip() == "":
-            risk_error = "Please select a risk level"
-        else:
-            db.session.query(Patient).filter(Patient.id == patientid).update({'risk_assessment': curr_assessment})
-            db.session.commit()
+#     patient = Patient.query.filter_by(id=patientid).first()
 
-    return render_template("curr_assessment.html", patient=patient, risk_levels=risk_levels, risk_error=risk_error)
+#     if patientid and curr_assessment:
+#         if patient.id == patientid and curr_assessment in risk_levels:
+#             db.session.query(Patient).filter(Patient.id == patientid).update({'risk_assessment': curr_assessment})
+#             db.session.commit()
 
+
+#     if not patient:
+#         flash("Patient not found")
+#         return redirect(url_for("error"))
+
+#     if request.method == 'POST':        
+#         curr_assessment = request.form['risk']
+
+#         if not curr_assessment or curr_assessment.strip() == "":
+#             risk_error = "Please select a risk level"
+#         else:
+#             db.session.query(Patient).filter(Patient.id == patientid).update({'risk_assessment': curr_assessment})
+#             db.session.commit()
+
+#     return render_template("curr_assessment.html", patient=patient, risk_levels=risk_levels, risk_error=risk_error)
+    
+    # ======================================================================================================================
+
+# @app.route("/risk", methods=['GET', 'POST'])
+# @app.route("/risk/<int:patientid>/<curr_assessment>")
+# def set_risk(patientid=None, curr_assessment=None):
+#     risk_error = ""
+#     session['patientid'] = 1
+#     if "patientid" in session:
+#         patientid = session['patientid']
+#     else:
+#         flash("Patient not specified")
+#         return redirect(url_for("error"))
+
+#     patient = Patient.query.filter_by(id=patientid).first()
+
+#     if patientid and curr_assessment:
+#         if patient.id == patientid and curr_assessment in risk_levels:
+#             db.session.query(Patient).filter(Patient.id == patientid).update({'risk_assessment': curr_assessment})
+#             db.session.commit()
+
+
+    # if not patient:
+    #     flash("Patient not found")
+    #     return redirect(url_for("error"))
+
+    # if request.method == 'POST':        
+    #     curr_assessment = request.form['risk']
+
+    #     if not curr_assessment or curr_assessment.strip() == "":
+    #         risk_error = "Please select a risk level"
+    #     else:
+    #         db.session.query(Patient).filter(Patient.id == patientid).update({'risk_assessment': curr_assessment})
+    #         db.session.commit()
+
+    # return render_template("curr_assessment.html", patient=patient, risk_levels=risk_levels, risk_error=risk_error)
+# ????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
 
 
 @app.route("/error")
 def error():
-    return render_template("base_for_risk.html")
+    return "Error"
 
 if __name__ == '__main__':
     app.run()
