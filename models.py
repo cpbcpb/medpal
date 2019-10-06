@@ -1,25 +1,25 @@
-import app
-from app import app
+#import app
+from app import db
 from tools import convert_address_to_lonlat
-from flask_sqlalchemy import SQLAlchemy
+# from flask_sqlalchemy import SQLAlchemy
+# db=db
+# db = SQLAlchemy(app)
+# app.config['DEBUG'] = True
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://medpal:password@localhost:3306/medpal'
+# app.config['SQLALCHEMY_ECHO'] = True
 
-db = SQLAlchemy(app)
-app.config['DEBUG'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://medpal:password@localhost:3306/medpal'
-app.config['SQLALCHEMY_ECHO'] = True
 
+# class Address():
 
-class Address():
-
-    def __init__(self, business_name, street_address1, street_address2=None, street_address3=None, 
-                city=None, state=None, zip_code=None, country=None, active=False, verified=False, start_date=None, end_date=None):
-        self.street_address1 = street_address1
-        self.street_address2 = street_address2
-        self.street_address3 = street_address3
-        self.city = city
-        self.state = state
-        self.zip_code = zip_code
-        self.country = country
+#     def __init__(self, business_name, street_address1, street_address2=None, street_address3=None, 
+#                 city=None, state=None, zip_code=None, country=None, active=False, verified=False, start_date=None, end_date=None):
+#         self.street_address1 = street_address1
+#         self.street_address2 = street_address2
+#         self.street_address3 = street_address3
+#         self.city = city
+#         self.state = state
+#         self.zip_code = zip_code
+#         self.country = country
 
 class Medicine(db.Model):
 
@@ -122,7 +122,7 @@ class Patient(db.Model):
     gender = db.Column(db.String(50))
     location = db.Column(db.String(200))
     
-    deliveries = db.relationship("Delivery", backref="patient_id")
+    #deliveries = db.relationship("Delivery", backref="patient_id")
     
  
     def __init__(self, name, last_name, phone, email, address, meds, risk_assessment, created_date, pharmacy, last_filled, last_filled_amount, dob, insurance, group_no, ss_no, Rx_no, chronic_conditions, allergies, cell_phone, gender):
@@ -146,4 +146,4 @@ class Patient(db.Model):
         self.ss_no = ss_no
         self.chronic_conditions = chronic_conditions
         self.Rx_no = Rx_no
-        self.location = convert_address_to_lonlat(self.location)
+        #self.location = convert_address_to_lonlat(self.location)
