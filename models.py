@@ -1,9 +1,12 @@
 import app
+from app import app
 from tools import convert_address_to_lonlat
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy(app)
-
+app.config['DEBUG'] = True
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://medpal:password@localhost:3306/medpal'
+app.config['SQLALCHEMY_ECHO'] = True
 
 
 class Address():
@@ -36,9 +39,9 @@ class Medicine(db.Model):
 class Delivery(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
-    driver_id = db.Column(db.integer, db.ForeignKey("driver.id"))
+    driver_id = db.Column(db.Integer)
     patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'))
-    package = db.Column(db.Integer(2000), nullable=False)
+    package = db.Column(db.String(2000), nullable=False)
     status = db.Column(db.String(50), nullable=False)
     notes = db.Column(db.String(2000))
     patient_comments = db.Column(db.String(2000))
@@ -72,10 +75,10 @@ class Pharmacy(db.Model):
     verified = db.Column(db.Boolean)
     start_date = db.Column(db.DateTime)
     end_date = db.Column(db.DateTime)
-    store_manager_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    store_manager_id = db.Column(db.Integer)
     customers = db.relationship('Patients', backref='patient')
     #no orders DB
-    orders = db.relationship('Order', backref='order')
+    #orders = db.relationship('Order', backref='order')
     #no driver DB
     deliveries = db.relationship('Delivery', backref='driver')
 

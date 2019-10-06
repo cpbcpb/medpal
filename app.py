@@ -1,14 +1,26 @@
 from flask import Flask, request, render_template, session
 from flask_sqlalchemy import SQLAlchemy
 import models
+import nexmo
 
+client = nexmo.Client(key='7d3b3494', secret='vMF3mb7GNxMMDt9s')
 
 app = Flask(__name__)
 db = SQLAlchemy(app)
 
+app.config['DEBUG'] = True
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://medpal:password@localhost:3306/medpal'
+app.config['SQLALCHEMY_ECHO'] = False
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 @app.route('/', methods=["GET"])
 def index():
+    client.send_message({
+        'from': '15859357147',
+        'to': '18134849281',
+        'text': 'Hello from Nexmo',
+    })
+
     return 'HOMEPAGE AND LOGIN (Doesnt need to be extravagant'
 
 @app.route('/signup', methods=["GET"])
@@ -118,5 +130,5 @@ def map():
 def deliver():
     return 'DELIVERY CONFIRMATION VIEW'
 
-if __name__ == "__main__":
-    app.run(debug=True)
+if __name__ == '__main__':
+    app.run()
