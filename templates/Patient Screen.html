@@ -6,37 +6,98 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        
-        <!-- Just using the CDN for now bc basic lol -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/checkbox.min.css" rel="stylesheet">
 
-        <title>Here's a title!</title>
+        <!-- Just using the CDN for now bc basic lol -->
     </head>
     <body>
-        
-        <div class="container" style="margin:20px">
-            <div class="row">
-                <div class="col-sm-2">
-                  <h3><u>John Johnson</u></h3> 
-                  <!-- this heading is the name. -->
-                  <p></p>
-                </div>
-                <div class="col-sm-2">
-                  <h3>Column 2</h3>
-                  <p>Lorem ipsum dolor..</p>
-                </div>
-                <div class="col-sm-4">
-                  <h3>Column 3</h3>
-                  <p>Lorem ipsum dolor..</p>
-                </div>
-              </div>
-        
-    
+      <nav class="navbar navbar-dark bg-primary">
+        <h1>
+        <img src="Logo_White v2.png" alt="MedPal logo" width=70 height=20>
+        </h1>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse " id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#">Settings</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Do Not Disturb Mode</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Invite People</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Online (insert toggle switch)</a>
+              </li>
+          </ul>
         </div>
+      </nav>
+
+    <div class="container-fluid">
+
+<br>
+        <div class="row">
+            <div class="col-5 offset-3">
+              <img src="user.png" height="160" width="160" >
+            </div>
+          </div>
+<br>
+        <div class="row">
+          <div class="col-6 text-right font-weight-bold " style="font-size: 20px;">Patient ID:</div>
+          <div class="col-6" style="font-size: 20px;color: gray;">5454552</div>
+        </div>
+        <div class="row">
+            <div class="col-6 text-right font-weight-bold" style="font-size: 20px;">Order #:</div>
+            <div class="col-6" style="font-size: 20px;color: gray">5454552</div>
+          </div>
+<br>
+<h3 style="text-align:center;color:white;background-color:blueviolet;margin-bottom: 0px; "> 
+    Order Summary 
+</h3>
+          <table class="table table-striped" >
+          <thead style="background-color: blue;">
+              <tr>
+                <th scope="col-" ">Medicine</th>
+                <th scope="col">Strength</th>
+                <th scope="col">Quantity</th>
+              </tr>
+            </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Humira</th>
+              <td>40mg/0.4mL</td>
+              <td>1 pen</td>
+            </tr>
+            <tr>
+              <th scope="row">2</th>
+              <td>Jacob</td>
+              <td>Thornton</td>
+            </tr>
+            <tr>
+              <th scope="row">3</th>
+              <td>Larry</td>
+              <td>the Bird</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="ui toggle checkbox ">
+            <input type="checkbox" name="public">
+            <label>Delivered</label>
+          </div>
+            
+        
+    </div>
+
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/checkbox.min.js" crossorigin="anonymous"></script>
+
     </body>
 </html>

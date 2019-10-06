@@ -2,6 +2,10 @@ from flask import Flask, request, render_template, session, flash, redirect, url
 # from flask_sqlalchemy import SQLAlchemy
 # from models import Pharmacy, Patient
 
+from flask import Flask
+import nexmo
+
+client = nexmo.Client(key='7d3b3494', secret='vMF3mb7GNxMMDt9s')
 
 app = Flask(__name__)
 # db = SQLAlchemy(app)
@@ -10,6 +14,15 @@ app = Flask(__name__)
 
 # risk_levels = ["None", "Low", "Medium", "High"]
 
+
+@app.route('/', methods=["GET"])
+def index():
+    client.send_message({
+        'from': '15859357147',
+        'to': '18134849281',
+        'text': 'Hello from Nexmo',
+    })
+    return 'HOMEPAGE AND LOGIN (Doesnt need to be extravagant'
 
 @app.route('/', methods=["GET"])
 def index():
