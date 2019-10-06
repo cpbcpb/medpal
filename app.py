@@ -130,5 +130,45 @@ def map():
 def deliver():
     return 'DELIVERY CONFIRMATION VIEW'
 
+@app.route("/risk", methods=['GET', 'POST'])
+@app.route("/risk/<int:patientid>/<curr_assessment>")
+def set_risk(patientid=None, curr_assessment=None):
+    risk_error = ""
+
+    if "patientid" in session:
+        patientid = session['patientid']
+    else:
+        flash("Patient not specified")
+        return redirect(url_for("error"))
+
+    patient = Patient.query.filter_by(id=patientid).first()
+
+    if patientid and curr_assessment:
+        if patient.id == patientid and curr_assessment in risk_levels:
+            db.session.query(Patient).filter(Patient.id == patientid).update({'risk_assessment': curr_assessment})
+            db.session.commit()
+
+
+    if not patient:
+        flash("Patient not found")
+        return redirect(url_for("error"))
+
+    if request.method == 'POST':        
+        curr_assessment = request.form['risk']
+
+        if not curr_assessment or curr_assessment.strip() == "":
+            risk_error = "Please select a risk level"
+        else:
+            db.session.query(Patient).filter(Patient.id == patientid).update({'risk_assessment': curr_assessment})
+            db.session.commit()
+
+    return render_template("curr_assessment.html", patient=patient, risk_levels=risk_levels, risk_error=risk_error)
+
+
+
+@app.route("/error")
+def error():
+    return "Error"
+
 if __name__ == '__main__':
     app.run()
